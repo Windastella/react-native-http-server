@@ -27,7 +27,7 @@ public class Server extends NanoHTTPD {
     private Map<String, ReadableMap> response;
 
 
-    public Server(ReactContext context, String host = "127.0.0.1", int port, int timeout) {
+    public Server(ReactContext context, String host, int port, int timeout) {
         super(host, port);
         reactContext = context;
         this.timeout = timeout;
