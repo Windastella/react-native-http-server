@@ -107,8 +107,6 @@ public class Server extends NanoHTTPD {
             this.response.remove(url); // clear responses
         }
 
-        Log.d(TAG, "Sending response for " + url);
-
         Response.Status status = Response.Status.valueOf(response.getString("status"));
         String type = response.getString("type");
         ReadableMap responseContent = response.getMap("content");
@@ -147,6 +145,8 @@ public class Server extends NanoHTTPD {
         res.addHeader("Access-Control-Allow-Headers", "X-Requested-With");
         res.addHeader("Access-Control-Allow-Headers", "Authorization");
 
+        Log.d(TAG, "Sending response for " + url);
+        
         return res;
     }
 
