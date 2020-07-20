@@ -38,7 +38,7 @@ public class RNHttpServerModule extends ReactContextBaseJavaModule {
     private static final String ERROR_SERVER_NOT_RUNNING = "ERROR_SERVER_NOT_RUNNING";
     private static final String ERROR_COULD_NOT_START = "ERROR_COULD_NOT_START";
 
-    private int host;
+    private String host;
     private int port;
     private int timeout;
     private Server server = null;
