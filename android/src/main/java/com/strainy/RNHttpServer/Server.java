@@ -108,6 +108,8 @@ public class Server extends NanoHTTPD {
             this.response.remove(url); // clear responses
         }
 
+        Log.d(TAG, "Preparing response");
+
         Response.Status status = Response.Status.valueOf(response.getString("status"));
         String type = response.getString("type");
         ReadableMap responseContent = response.getMap("content");
@@ -138,6 +140,8 @@ public class Server extends NanoHTTPD {
             Log.d(TAG, errorText);
             return newFixedLengthResponse(errorStatus, MIME_PLAINTEXT, errorText);
         }
+
+        Log.d(TAG, "Response ready");
 
         // Add headers to the response
         res.addHeader("Access-Control-Allow-Origin", "*");
