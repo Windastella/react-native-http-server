@@ -102,7 +102,7 @@ public class Server extends NanoHTTPD {
 
         if (errorStatus != null) {
             Log.d(TAG, errorText);
-            return newFixedLengthResponse(errorStatus, MIME_PLAINTEXT, errorText);
+            return Response.newFixedLengthResponse(errorStatus, MIME_PLAINTEXT, errorText);
         } else {
             response = this.response.get(url);
             this.response.remove(url); // clear responses
@@ -118,7 +118,7 @@ public class Server extends NanoHTTPD {
         if (responseContent.hasKey("data")) {
             String data = responseContent.getString("data");
 
-            res = newFixedLengthResponse(status, type, data);
+            res = Response.newFixedLengthResponse(status, type, data);
         } else if (responseContent.hasKey("filePath")) {
             String filePath = responseContent.getString("filePath");
 
@@ -127,18 +127,18 @@ public class Server extends NanoHTTPD {
                 long responseLength = file.length();
                 FileInputStream fileInputStream = new FileInputStream(file);
 
-                res = newFixedLengthResponse(status, type, fileInputStream, responseLength);
+                res = Response.newFixedLengthResponse(status, type, fileInputStream, responseLength);
             } catch (FileNotFoundException e) {
                 errorStatus = Response.Status.INTERNAL_ERROR;
                 errorText = "File not found: " + filePath;
                 Log.d(TAG, errorText);
-                return newFixedLengthResponse(errorStatus, MIME_PLAINTEXT, errorText);
+                return Response.newFixedLengthResponse(errorStatus, MIME_PLAINTEXT, errorText);
             }
         } else {
             errorStatus = Response.Status.INTERNAL_ERROR;
             errorText = "Response is neither file nor text, which is not supported";
             Log.d(TAG, errorText);
-            return newFixedLengthResponse(errorStatus, MIME_PLAINTEXT, errorText);
+            return Response.newFixedLengthResponse(errorStatus, MIME_PLAINTEXT, errorText);
         }
 
         Log.d(TAG, "Response ready");
