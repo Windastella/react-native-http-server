@@ -101,6 +101,7 @@ public class Server extends NanoHTTPD {
         }
 
         if (errorStatus != null) {
+            Log.d(TAG, errorText);
             return newFixedLengthResponse(errorStatus, MIME_PLAINTEXT, errorText);
         } else {
             response = this.response.get(url);
@@ -128,13 +129,13 @@ public class Server extends NanoHTTPD {
             } catch (FileNotFoundException e) {
                 errorStatus = Response.Status.INTERNAL_ERROR;
                 errorText = "File not found: " + filePath;
-
+                Log.d(TAG, errorText);
                 return newFixedLengthResponse(errorStatus, MIME_PLAINTEXT, errorText);
             }
         } else {
             errorStatus = Response.Status.INTERNAL_ERROR;
             errorText = "Response is neither file nor text, which is not supported";
-
+            Log.d(TAG, errorText);
             return newFixedLengthResponse(errorStatus, MIME_PLAINTEXT, errorText);
         }
 
