@@ -25,10 +25,12 @@ public class RNHttpServerModule extends ReactContextBaseJavaModule {
 
     private static final String TAG = "RNHttpServer";
 
+    private static final String DEFAULT_HOST_KEY = "DEFAULT_HOST";
     private static final String DEFAULT_PORT_KEY = "DEFAULT_PORT";
     private static final String DEFAULT_TIMEOUT_KEY = "DEFAULT_TIMEOUT";
     private static final String SERVER_EVENT_ID_KEY = "SERVER_EVENT";
 
+    private static final String DEFAULT_HOST = "127.0.0.1";
     private static final int DEFAULT_PORT = 8080;
     private static final int DEFAULT_TIMEOUT = 30000;
     private static final String SERVER_EVENT_ID = "reactNativeHttpServerResponse";
@@ -36,6 +38,7 @@ public class RNHttpServerModule extends ReactContextBaseJavaModule {
     private static final String ERROR_SERVER_NOT_RUNNING = "ERROR_SERVER_NOT_RUNNING";
     private static final String ERROR_COULD_NOT_START = "ERROR_COULD_NOT_START";
 
+    private int host;
     private int port;
     private int timeout;
     private Server server = null;
@@ -45,6 +48,7 @@ public class RNHttpServerModule extends ReactContextBaseJavaModule {
         super(reactContext);
         this.reactContext = reactContext;
 
+        host = DEFAULT_HOST;
         port = DEFAULT_PORT;
         timeout = DEFAULT_TIMEOUT;
     }
@@ -57,6 +61,7 @@ public class RNHttpServerModule extends ReactContextBaseJavaModule {
     @Override
     public Map<String, Object> getConstants() {
         final Map<String, Object> constants = new HashMap<>();
+        constants.put(DEFAULT_HOST_KEY, DEFAULT_HOST);
         constants.put(DEFAULT_PORT_KEY, DEFAULT_PORT);
         constants.put(DEFAULT_TIMEOUT_KEY, DEFAULT_TIMEOUT);
         constants.put(SERVER_EVENT_ID_KEY, SERVER_EVENT_ID);
@@ -67,6 +72,10 @@ public class RNHttpServerModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void init(ReadableMap options) {
         Log.d(TAG, "Initializing server...");
+
+        if (options.hasKey("host")) {
+            host = options.getString("host");
+        }
 
         if (options.hasKey("port")) {
             port = options.getInt("port");
@@ -80,7 +89,7 @@ public class RNHttpServerModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void start(Promise promise) {
         try {
-            server = new Server(reactContext, port, timeout);
+            server = new Server(reactContext, host, port, timeout);
             server.start();
             port = server.getListeningPort();
 
